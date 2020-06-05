@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="p-5 w-100 text-center">
+        {% if is_result %}
+
+        <div id="main" style="width: 960px;height:480px;"></div>
+
+        <div class="mt-3 row w-100 " style="flex-wrap: nowrap;overflow-x: scroll;">
+            {% for item in line %}
+            <div class="col-3 p-2">
+                <img src="{{item['filename']}}" class="d-block" width="250px" alt="{{item['filename']}}">
+                <p>{{item['label']}}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+
+        {% if is_video %}
+        <div>
+            <video src="{{video_src}}" controls autoplay style="width: 600px;height:480px;"></video>
+            <div class="p-2">
+                <a href="{{video_href}}" class="btn btn-info">解帧</a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if is_frame %}
+        <header class="p-2">
+            <a href="{{text}}" class="btn btn-info">去识别这个视频</a>
+        </header>
+
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel"
+            style="width: 720px; left: 15%;">
+            <div class="carousel-inner">
+
+                {% for f in frames %}
+
+                <div class="carousel-item {% if loop.first %} active {% endif %}">
+                    <img src="{{f['src']}}" class="d-block w-100" alt="{{f['name']}}">
+                </div>
+
+                {% endfor %}
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+        <div class="mt-3 row w-100 " style="flex-wrap: nowrap;overflow-x: scroll;">
+            {% for f in frames %}
+            <div class="col-3 p-2">
+                <img src="{{f['src']}}" class="d-block" width="250px" alt="{{f['name']}}">
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% if is_result %}
+<script src="{{url_for('static',filename='js/echarts.min.js')}}"></script>
+<script>
+    // 基于准备好的dom，初始化 echarts 实例并绘制图表。
+    echarts.init(document.getElementById('main')).setOption({
+        title: {
+            text: '景别识别结果'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['远景', '中景', '近景', '特景']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: {{frame|tojson}}
+        },
+        yAxis: {
+            type: 'value',
+            minInterval: 1,
+            name: '景别',
+            axisLabel: {
+                margin: 2,
+                formatter: function (value, index) {
+                    if (value == 0) {
+                        value = "特写";
+                    } else if (value == 1) {
+                        value = "近景";
+                    } else if (value == 2) {
+                        value = "中景";
+                    } else if (value == 3) {
+                        value = "远景";
+                    }
+                    return value;
+                }
+            }
+        },
+        series: [{
+            data: {{label|tojson}},
+            type: 'line'
+        }]
+    });
+</script>
+{% endif %}
+{% endblock %}

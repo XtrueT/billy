@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="p-5 d-flex container">
+        <div class="col-md-10">
+            <h1>Record</h1>
+            <div class="btn-toolbar mb-2" role="toolbar" aria-label="">
+                <div class="btn-group" role="group" aria-label="">
+                    <button id="btn-start-recording" type="button" class="btn btn-success">Start Record</button>
+                    <button id="btn-stop-recording" type="button" class="btn btn-danger">Stop Record</button>
+                    <button id="btn-upload-recording" type="button" class="btn btn-warning">Upload Record</button>
+                </div>
+            </div>
+            <video src="" id="record" controls autoplay style="width: 600px;height:480px;"></video>
+        </div>
+        <div class="col-md-2">
+            <div class="p-2">
+                <a id="filename" href="" class="btn btn-info"></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<!-- use 5.6.1 or any other version on cdnjs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.1/RecordRTC.js"></script>
+<script src="{{url_for('static', filename='js/screen.js')}}"></script>
+{% endblock %}
