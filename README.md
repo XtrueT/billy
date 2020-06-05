@@ -1,5 +1,5 @@
 # 1
-absl-py==0.9.0
+`absl-py==0.9.0
 astor==0.8.1
 click==7.1.2
 Flask==1.1.2
@@ -26,7 +26,7 @@ termcolor==1.1.0
 tf-estimator-nightly==1.14.0.dev2019060501
 Werkzeug==1.0.1
 wrapt==1.12.1
-zipp==3.1.0
+zipp==3.1.0`
 
 # 2
 需要在App下创建模型文件夹    
