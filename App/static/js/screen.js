@@ -133,7 +133,7 @@ upload_btn.onclick = function () {
             console.log(resp)
             alert(resp['message'])
             link.href = resp['data']
-            link.innerHTML = `Decoding frame`
+            link.innerHTML = `解帧`
             console.log(link)
         }).catch(error => console.error('Error:', error))
     }
